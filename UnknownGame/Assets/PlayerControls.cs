@@ -16,7 +16,7 @@ public class PlayerControls : MonoBehaviour
     private Vector2 moveAmount;
     private Vector2 lookAmount;
     private Animator animator;
-    private Rigidbody rigidbody;
+    new private Rigidbody rigidbody;
 
     public float WalkSpeed = 5;
     public float RotateSpeed = 5;
@@ -36,6 +36,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Start Y: " + transform.position.y);
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
         lookAction = InputSystem.actions.FindAction("Look");
@@ -46,9 +47,10 @@ public class PlayerControls : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log("Late Y: " + transform.position.y);
         moveAmount = moveAction.ReadValue<Vector2>();
         lookAmount = lookAction.ReadValue<Vector2>();
-    
+        
         if (jumpAction.WasPressedThisFrame())
         {
             Jump();
@@ -57,7 +59,7 @@ public class PlayerControls : MonoBehaviour
 
     public void Jump()
     {
-        rigidbody.AddForceAtPosition(new Vector3(0, 5f, 0), Vector3.up, ForceMode.Impulse);
+        GetComponent<Rigidbody>().AddForce(JumpSpeed * Vector3.up, ForceMode.Impulse);
         // will set a trigger to play a jump animation
         animator.SetTrigger("Jump");
     }
@@ -72,7 +74,7 @@ public class PlayerControls : MonoBehaviour
     {
         animator.SetFloat("Speed", moveAmount.y);
         // move character fwd/back based on moveAmount
-        rigidbody.MovePosition(rigidbody.position + transform.forward * moveAmount.y * WalkSpeed * Time.deltaTime);
+        GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + transform.forward * moveAmount.y * WalkSpeed * Time.deltaTime);
     }
 
     private void Rotating()
@@ -80,7 +82,7 @@ public class PlayerControls : MonoBehaviour
         float rotationAmount = lookAmount.x * RotateSpeed * Time.deltaTime;
         // only rotates on y-axis
         Quaternion deltaRotation = Quaternion.Euler(0, rotationAmount, 0);
-        rigidbody.MoveRotation(rigidbody.rotation * deltaRotation);
+        GetComponent<Rigidbody>().MoveRotation(GetComponent<Rigidbody>().rotation * deltaRotation);
     }
 }
 /*
