@@ -66,11 +66,11 @@ public class PlayerControls : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Walking();
+        Move();
         Rotating();
     }
 
-    private void Walking()
+    private void Move()
     {
         animator.SetFloat("Speed", moveAmount.y);
         // move character fwd/back based on moveAmount
