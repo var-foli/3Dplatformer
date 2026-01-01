@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using TMPro;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
@@ -97,6 +99,10 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
+        // coin counter
+        private int coinCounter = 0;
+        public TMP_Text coinText;
+
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
 #endif
@@ -159,6 +165,7 @@ namespace StarterAssets
             GroundedCheck();
             Move();
 
+            coinText.text = "x " + coinCounter.ToString();
         }
 
         private void LateUpdate()
@@ -397,6 +404,16 @@ namespace StarterAssets
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
+            }
+        }
+
+        private void OnTriggerEnter(Collider collision)
+        {
+            if (collision.CompareTag("Coin"))
+            {
+                // make coin disapear on collision
+                collision.gameObject.SetActive(false);
+                coinCounter += 1;
             }
         }
     }
