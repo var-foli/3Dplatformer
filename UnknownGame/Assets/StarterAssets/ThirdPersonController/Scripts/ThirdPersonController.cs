@@ -415,6 +415,11 @@ namespace StarterAssets
                 collision.gameObject.SetActive(false);
                 coinCounter += 1;
             }
+            else if (collision.CompareTag("Star"))
+            {
+                // make star disapear on collision
+                collision.gameObject.SetActive(false);
+            }
         }
     }
 }
