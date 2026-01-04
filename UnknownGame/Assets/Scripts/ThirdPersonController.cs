@@ -421,5 +421,37 @@ namespace StarterAssets
                 collision.gameObject.SetActive(false);
             }
         }
+
+        private void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            if (hit.collider.CompareTag("LogTop"))
+            {
+                // log script
+                LogController logScript = hit.transform.parent.gameObject.GetComponent<LogController>();
+
+                Debug.Log("Log collision!");
+                if (hit.normal.y > 0.5)
+                {
+                    Debug.Log("Log was hit from above!");
+                    logScript.OnHitFromAbove();
+                    // character will do a jump action and be thrown upward a bit
+                }
+                else
+                {
+                    Debug.Log("Player was hit!");
+                    // character will take damage and be thrown backward a bit
+                }
+            }
+        }
+
+        private void OnHitLog(Collider collision)
+        {
+            // character will do a jump action and be thrown upward a bit
+        }
+
+        private void OnHitByLog(Collider collision)
+        {
+            // character will take damage and be thrown backward a bit
+        }
     }
 }

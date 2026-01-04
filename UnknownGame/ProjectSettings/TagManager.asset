@@ -7,6 +7,8 @@ TagManager:
   - CinemachineTarget
   - Coin
   - Star
+  - Log
+  - LogTop
   layers:
   - Default
   - TransparentFX
