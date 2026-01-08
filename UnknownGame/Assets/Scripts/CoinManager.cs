@@ -27,4 +27,9 @@ public class CoinManager : MonoBehaviour
             coinEffect.Play();
         }
     }
+
+    public void JumpUp()
+    {
+
+    }
 }

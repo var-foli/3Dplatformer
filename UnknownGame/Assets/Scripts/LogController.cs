@@ -15,6 +15,10 @@ public class LogController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // initializing log's coin to be inactive
+        transform.Find("Coin Object").gameObject.SetActive(false);
+        //GameObject myobject = transform.Find("CoinObject").gameObject;
+
         InvokeRepeating(nameof(Destination), 1, frequency);
     }
 
@@ -39,5 +43,26 @@ public class LogController : MonoBehaviour
         transform.Find("ParticleSmoke").gameObject.SetActive(false);
         transform.Find("FullBody").gameObject.SetActive(false);
         logEffect.Play();
+    }
+
+    public void ThrowCoinUp(Vector3 location)
+    {
+        Transform coinTransform = transform.Find("Coin Object");
+        CoinManager coinScript = transform.Find("Coin Object/Coin").GetComponent<CoinManager>();
+
+        coinTransform.position = location;
+        coinTransform.gameObject.SetActive(true);
+
+        coinScript.JumpUp();
+
+        // Jump
+        // the square root of H * -2 * G = how much velocity needed to reach desired height
+        //_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+
+        // apply gravity over time if under terminal (53.0f) (multiply by delta time twice to linearly speed up over time)
+        //if (_verticalVelocity < 53.0f)
+        //{
+        //    _verticalVelocity += Gravity * Time.deltaTime;
+        //}
     }
 }

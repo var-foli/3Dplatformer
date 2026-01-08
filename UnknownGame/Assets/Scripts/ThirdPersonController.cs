@@ -2,6 +2,7 @@
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
@@ -424,17 +425,17 @@ namespace StarterAssets
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            if (hit.collider.CompareTag("LogTop"))
+            if (hit.collider.CompareTag("Log"))
             {
                 // log script
-                LogController logScript = hit.transform.parent.gameObject.GetComponent<LogController>();
+                LogController logScript = hit.transform.parent.parent.gameObject.GetComponent<LogController>();
 
                 Debug.Log("Log collision!");
                 if (hit.normal.y > 0.5)
                 {
-                    Debug.Log("Log was hit from above!");
-                    logScript.OnHitFromAbove();
-                    // character will do a jump action and be thrown upward a bit
+
+                    // start coroutine
+                    StartCoroutine(LogHitHandler(logScript));
                 }
                 else
                 {
@@ -444,9 +445,56 @@ namespace StarterAssets
             }
         }
 
-        private void OnHitLog(Collider collision)
+        private IEnumerator LogHitHandler(LogController logScript)
         {
+            Debug.Log("Log was hit from above!");
+            logScript.OnHitFromAbove();
+
             // character will do a jump action and be thrown upward a bit
+            yield return StartCoroutine(OnHitLog());
+
+            // make coin pop out from where character landed
+            Vector3 newCoinLocation = new Vector3(transform.position.x, transform.position.y + 1.55f,
+        transform.position.z);
+            logScript.ThrowCoinUp(newCoinLocation);
+        }
+
+        private IEnumerator OnHitLog()
+        {
+            // character will do a jump action and coin will apear above
+            // jump action
+
+            // update animator if using character
+            if (_hasAnimator)
+            {
+                _animator.SetBool(_animIDJump, false);
+                _animator.SetBool(_animIDFreeFall, false);
+            }
+
+            // Jump
+            // the square root of H * -2 * G = how much velocity needed to reach desired height
+            _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+
+
+            // update animator if using character
+            if (_hasAnimator)
+            {
+                _animator.SetBool(_animIDJump, true);
+            }
+
+
+            // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
+            if (_verticalVelocity < _terminalVelocity)
+            {
+                _verticalVelocity += Gravity * Time.deltaTime;
+            }
+            
+            // wait for one frame for character to jump and Grounded to be false
+            yield return null;
+
+            // continue returning null until character is back on Ground
+            while(!Grounded) yield return null;
+            //////////////////
         }
 
         private void OnHitByLog(Collider collision)
