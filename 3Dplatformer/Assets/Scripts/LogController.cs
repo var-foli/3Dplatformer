@@ -39,21 +39,27 @@ public class LogController : MonoBehaviour
 
     public void OnHitFromAbove()
     {
+        CancelInvoke(nameof(Destination));
+        gameObject.GetComponent<Animator>().enabled = false;
+        gameObject.GetComponent<NavMeshAgent>().enabled = false;
         transform.Find("ParticleLeaves").gameObject.SetActive(false);
         transform.Find("ParticleSmoke").gameObject.SetActive(false);
-        transform.Find("FullBody").gameObject.SetActive(false);
-        logEffect.Play();
+        //logEffect.Play();
     }
 
-    public void ThrowCoinUp(Vector3 location)
+    public void ThrowCoinUp()
     {
+        GetComponent<NavMeshAgent>().enabled = false;
         Transform coinTransform = transform.Find("Coin Object");
         CoinManager coinScript = transform.Find("Coin Object/Coin").GetComponent<CoinManager>();
 
-        coinTransform.position = location;
+        coinTransform.position = new Vector3(coinTransform.position.x, coinTransform.position.y + 1.75f, coinTransform.position.z);
         coinTransform.gameObject.SetActive(true);
 
         coinScript.JumpUp();
+        
+        transform.Find("FullBody").gameObject.SetActive(false);
+        logEffect.Play();
 
         // Jump
         // the square root of H * -2 * G = how much velocity needed to reach desired height

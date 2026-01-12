@@ -81,6 +81,7 @@ namespace StarterAssets
         private float _cinemachineTargetPitch;
 
         // player
+        public bool freezeInput = false;
         private float _speed;
         private float _animationBlend;
         private float _targetRotation = 0.0f;
@@ -162,11 +163,15 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
+            Move();
             JumpAndGravity();
             GroundedCheck();
-            Move();
 
             coinText.text = "x " + coinCounter.ToString();
+
+            // update zoom
+            float scrollInput = _input.zoom;
+            //CinemachineCameraTarget.fieldOfView = Mathf.SmoothDamp(CinemachineCameraTarget.fieldOfView, scrollInput*5f, 0f, 0.2f);
         }
 
         private void LateUpdate()
@@ -208,6 +213,10 @@ namespace StarterAssets
 
         private void CameraRotation()
         {
+            if (freezeInput)
+            {
+                _input.look = Vector2.zero;
+            }
             // if there is an input and camera position is not fixed
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
@@ -229,6 +238,11 @@ namespace StarterAssets
 
         private void Move()
         {
+            if (freezeInput)
+            {
+                _input.move = Vector2.zero;
+            }
+
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
@@ -297,6 +311,11 @@ namespace StarterAssets
 
         private void JumpAndGravity()
         {
+            if (freezeInput)
+            {
+                _input.look = Vector2.zero;
+            }
+
             if (numJumps < 1)
             {
                 // reset the fall timeout timer
@@ -410,10 +429,19 @@ namespace StarterAssets
 
         private void OnTriggerEnter(Collider collision)
         {
+            Debug.Log($"collision with: {collision.gameObject.tag}");
             if (collision.CompareTag("Coin"))
             {
                 // make coin disapear on collision
                 collision.gameObject.SetActive(false);
+                coinCounter += 1;
+            }
+            else if (collision.CompareTag("CoinObject"))
+            {
+                // make coin disapear on collision
+                Debug.Log("coin object collision!");
+                collision.transform.parent.Find("Effect_07").SetParent(null);
+                collision.transform.parent.gameObject.SetActive(false);
                 coinCounter += 1;
             }
             else if (collision.CompareTag("Star"))
@@ -452,15 +480,15 @@ namespace StarterAssets
 
             // character will do a jump action and be thrown upward a bit
             yield return StartCoroutine(OnHitLog());
+            freezeInput = false;
 
-            // make coin pop out from where character landed
-            Vector3 newCoinLocation = new Vector3(transform.position.x, transform.position.y + 1.55f,
-        transform.position.z);
-            logScript.ThrowCoinUp(newCoinLocation);
+            // make coin pop out
+            logScript.ThrowCoinUp();
         }
 
         private IEnumerator OnHitLog()
         {
+            freezeInput = true;
             // character will do a jump action and coin will apear above
             // jump action
 
@@ -488,9 +516,10 @@ namespace StarterAssets
             {
                 _verticalVelocity += Gravity * Time.deltaTime;
             }
-            
+
             // wait for one frame for character to jump and Grounded to be false
-            yield return null;
+            yield return new WaitForSeconds(0.5f);
+            //yield return null;
 
             // continue returning null until character is back on Ground
             while(!Grounded) yield return null;

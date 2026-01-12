@@ -9,6 +9,8 @@ TagManager:
   - Star
   - Log
   - LogTop
+  - Ground
+  - CoinObject
   layers:
   - Default
   - TransparentFX
