@@ -53,7 +53,7 @@ public class LogController : MonoBehaviour
         Transform coinTransform = transform.Find("Coin Object");
         CoinManager coinScript = transform.Find("Coin Object/Coin").GetComponent<CoinManager>();
 
-        coinTransform.position = new Vector3(coinTransform.position.x, coinTransform.position.y + 1.75f, coinTransform.position.z);
+        coinTransform.position = new Vector3(coinTransform.position.x, coinTransform.position.y + 1.8f, coinTransform.position.z);
         coinTransform.gameObject.SetActive(true);
 
         coinScript.JumpUp();
