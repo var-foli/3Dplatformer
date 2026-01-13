@@ -44,10 +44,14 @@ namespace StarterAssets
 		{
 			SprintInput(value.isPressed);
 		}
+		public void OnZoom(InputValue value)
+		{
+			OnZoom(value.Get<float>());
+		}
 #endif
 
 
-		public void MoveInput(Vector2 newMoveDirection)
+        public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
 		} 

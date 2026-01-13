@@ -808,6 +808,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 59731869}
   m_Mesh: {fileID: -5216581434543980006, guid: 7545b41dcb5e9bc429013a8c2378c942, type: 3}
+--- !u!1 &61995938 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 111211059005918910, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
+  m_PrefabInstance: {fileID: 1252263291}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &66696125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11712,8 +11717,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4478343171737901407, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
+      propertyPath: ShoulderOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4478343171737901407, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
       propertyPath: ShoulderOffset.y
-      value: 0.36
+      value: 0.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 4478343171737901407, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
+      propertyPath: ShoulderOffset.z
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5239956807761340969, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
       propertyPath: coinText
@@ -11727,6 +11740,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5239956807761340969, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
+      propertyPath: PlayerFollowCamera
+      value: 
+      objectReference: {fileID: 61995938}
     - target: {fileID: 5389952822525515987, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
       propertyPath: field of view
       value: 40
@@ -11777,15 +11794,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7792946548933841966, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.23099995
+      value: 0.031000137
       objectReference: {fileID: 0}
     - target: {fileID: 7792946548933841966, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.09500015
+      value: 0.4450001
       objectReference: {fileID: 0}
     - target: {fileID: 7792946548933841966, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4
+      value: -5.5
       objectReference: {fileID: 0}
     - target: {fileID: 7792946548933841966, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11809,15 +11826,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8000721405928600781, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.23099995
+      value: 0.031000137
       objectReference: {fileID: 0}
     - target: {fileID: 8000721405928600781, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.09500015
+      value: 0.4450001
       objectReference: {fileID: 0}
     - target: {fileID: 8000721405928600781, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4
+      value: -5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8000721405928600781, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8000721405928600781, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8000721405928600781, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8000721405928600781, guid: 0e4199ed5d13a204385ebe76c440a478, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

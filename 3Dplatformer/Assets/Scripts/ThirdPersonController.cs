@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using Cinemachine;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
@@ -63,6 +64,7 @@ namespace StarterAssets
         [Header("Cinemachine")]
         [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
         public GameObject CinemachineCameraTarget;
+        public GameObject PlayerFollowCamera;
 
         [Tooltip("How far in degrees can you move the camera up")]
         public float TopClamp = 70.0f;
@@ -216,7 +218,25 @@ namespace StarterAssets
             if (freezeInput)
             {
                 _input.look = Vector2.zero;
+                _input.zoom = 0;
             }
+
+            // zoom
+            
+            //PlayerFollowCamera.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<Cinemachine3rdPersonFollow>().ShoulderOffset.z = _input.zoom;
+            if (_input.zoom > 0)
+            {
+                Debug.Log(_input.zoom);
+                PlayerFollowCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView += 0.5f;
+                //PlayerFollowCamera.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<Cinemachine3rdPersonFollow>().ShoulderOffset.z += 2;
+            }
+            else if (_input.zoom < 0)
+            {
+                Debug.Log(_input.zoom);
+                PlayerFollowCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView -= 0.5f;
+                //PlayerFollowCamera.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<Cinemachine3rdPersonFollow>().ShoulderOffset.z -= 2;
+            }
+
             // if there is an input and camera position is not fixed
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
