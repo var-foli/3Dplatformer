@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using Cinemachine;
+using Unity.VisualScripting;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
@@ -37,9 +38,11 @@ namespace StarterAssets
         [Space(10)]
         [Tooltip("The height the player can jump")]
         public float JumpHeight = 1.2f;
+        //public float JumpHeight = 2.4f;
 
         [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
         public float Gravity = -15.0f;
+        //public float Gravity = -9.81f;
 
         [Space(10)]
         [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
@@ -83,7 +86,7 @@ namespace StarterAssets
         private float _cinemachineTargetPitch;
 
         // player
-        public bool freezeInput = false;
+        //public bool freezeInput = false;
         private float _speed;
         private float _animationBlend;
         private float _targetRotation = 0.0f;
@@ -91,6 +94,7 @@ namespace StarterAssets
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
         private int numJumps = 3;
+        private bool playerUnfreeze = false;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -215,11 +219,11 @@ namespace StarterAssets
 
         private void CameraRotation()
         {
-            if (freezeInput)
+            /*if (freezeInput)
             {
                 _input.look = Vector2.zero;
                 _input.zoom = 0;
-            }
+            }*/
 
             // zoom
             
@@ -258,10 +262,10 @@ namespace StarterAssets
 
         private void Move()
         {
-            if (freezeInput)
+            /*if (freezeInput)
             {
                 _input.move = Vector2.zero;
-            }
+            }*/
 
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
@@ -331,10 +335,10 @@ namespace StarterAssets
 
         private void JumpAndGravity()
         {
-            if (freezeInput)
+            /*if (freezeInput)
             {
                 _input.look = Vector2.zero;
-            }
+            }*/
 
             if (numJumps < 1)
             {
@@ -479,9 +483,8 @@ namespace StarterAssets
                 LogController logScript = hit.transform.parent.parent.gameObject.GetComponent<LogController>();
 
                 Debug.Log("Log collision!");
-                if (hit.normal.y > 0.5)
+                if (hit.normal.y > 0.7)
                 {
-
                     // start coroutine
                     StartCoroutine(LogHitHandler(logScript));
                 }
@@ -496,19 +499,60 @@ namespace StarterAssets
         private IEnumerator LogHitHandler(LogController logScript)
         {
             Debug.Log("Log was hit from above!");
-            logScript.OnHitFromAbove();
+            logScript.logHits += 1;
+            logScript.freezeEnemy();
 
-            // character will do a jump action and be thrown upward a bit
-            yield return StartCoroutine(OnHitLog());
-            freezeInput = false;
+            if (logScript.logHits == 1)
+            {
+                // character will do a jump action and be thrown upward a bit
+                yield return StartCoroutine(OnHitLog(logScript));
+                playerUnfreeze = true;
+            } else
+            {
+                yield return StartCoroutine(checkLogHits(logScript));
+            }
 
-            // make coin pop out
-            logScript.ThrowCoinUp();
+            /*//freezeInput = false;
+            if (logScript.logHits == 2)
+            {
+                Debug.Log("Log hit twice!");
+                // kill enemy and make coin pop out
+                logScript.ThrowCoinUp();
+            } else if (playerUnfreeze == true)
+            {
+                Debug.Log("Log hit once!");
+                Debug.Log(logScript.logHits);
+                logScript.logHits = 0;
+                logScript.unfreezeEnemy();
+                playerUnfreeze = false;
+            }*/
+
+            
         }
 
-        private IEnumerator OnHitLog()
+        private IEnumerator checkLogHits(LogController logScript)
         {
-            freezeInput = true;
+            //freezeInput = false;
+            if (logScript.logHits == 2)
+            {
+                Debug.Log("Log hit twice!");
+                // kill enemy and make coin pop out
+                logScript.ThrowCoinUp();
+            }
+            else if (playerUnfreeze == true)
+            {
+                Debug.Log("Log hit once!");
+                Debug.Log(logScript.logHits);
+                logScript.logHits = 0;
+                logScript.unfreezeEnemy();
+                playerUnfreeze = false;
+            }
+            yield return null;
+        }
+
+        private IEnumerator OnHitLog(LogController logScript)
+        {
+            //freezeInput = true;
             // character will do a jump action and coin will apear above
             // jump action
 
@@ -538,11 +582,12 @@ namespace StarterAssets
             }
 
             // wait for one frame for character to jump and Grounded to be false
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(3f);
             //yield return null;
-
+            checkLogHits(logScript);
             // continue returning null until character is back on Ground
-            while(!Grounded) yield return null;
+            //while(!Grounded) yield return null;
+            //yield return null;
             //////////////////
         }
 

@@ -9,6 +9,7 @@ public class LogController : MonoBehaviour
     float stoppingDistance;
     public Vector3 destination;
     public int frequency = 7;
+    public int logHits = 0;
 
     public ParticleSystem logEffect;
 
@@ -37,7 +38,7 @@ public class LogController : MonoBehaviour
         agent.stoppingDistance = stoppingDistance;
     }
 
-    public void OnHitFromAbove()
+    public void freezeEnemy()
     {
         CancelInvoke(nameof(Destination));
         gameObject.GetComponent<Animator>().enabled = false;
@@ -47,6 +48,15 @@ public class LogController : MonoBehaviour
         //logEffect.Play();
     }
 
+    public void unfreezeEnemy()
+    {
+        InvokeRepeating(nameof(Destination), 1, frequency);
+        gameObject.GetComponent<Animator>().enabled = true;
+        gameObject.GetComponent<NavMeshAgent>().enabled = true;
+        transform.Find("ParticleLeaves").gameObject.SetActive(true);
+        transform.Find("ParticleSmoke").gameObject.SetActive(true);
+        //logEffect.Play();
+    }
     public void ThrowCoinUp()
     {
         GetComponent<NavMeshAgent>().enabled = false;
