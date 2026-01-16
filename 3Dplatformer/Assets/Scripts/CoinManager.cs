@@ -52,17 +52,15 @@ public class CoinManager : MonoBehaviour
 
     public void JumpUp()
     {
-        //TryGetComponent(out coinRigidbody);
         coinRigidbody = transform.GetComponent<Rigidbody>();
         GetComponent<SimpleGemsAnim>().enabled = false;
-        //Debug.Log("Jumping up!");
+
         // get random direction to move coin in
         targetRotation = Random.Range(0f, 360f);
-        //Debug.Log($"targetRotation: {targetRotation}");
+
         // Jump
         // the square root of H * -2 * G = how much velocity needed to reach desired height
         verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-        //Debug.Log($"verticalVelocity: {verticalVelocity}");
 
 
         // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
@@ -71,7 +69,6 @@ public class CoinManager : MonoBehaviour
             verticalVelocity += Gravity * Time.deltaTime;
         }
 
-        //Debug.Log("Moving!");
         // a reference to the coin's current horizontal velocity
         float currentHorizontalSpeed = new Vector3(coinRigidbody.linearVelocity.x, 0.0f, coinRigidbody.linearVelocity.z).magnitude;
 
@@ -81,10 +78,10 @@ public class CoinManager : MonoBehaviour
 
         // round speed to 3 decimal places
         speed = Mathf.Round(speed * 1000f) / 1000f;
-        //Debug.Log($"speed: {speed}");
+
         Vector3 rotationDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
         Vector3 horizontalDirection = new Vector3(rotationDirection.x, 0.0f, rotationDirection.z);
-        //Debug.Log($"rotationDirection: {rotationDirection}");
+
         coinRigidbody.AddForce(rotationDirection.normalized * (speed * Time.deltaTime) 
             + new Vector3(0.0f, verticalVelocity, 0.0f) * Time.deltaTime 
             + new Vector3(rotationDirection.x, 0.0f, rotationDirection.z) * 50000 * Time.deltaTime);

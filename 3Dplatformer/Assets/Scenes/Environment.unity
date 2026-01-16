@@ -1809,6 +1809,7 @@ MonoBehaviour:
   agent: {fileID: 189483566}
   destination: {x: 0, y: 0, z: 0}
   frequency: 7
+  logHits: 0
   logEffect: {fileID: 764590973}
 --- !u!1 &190689020 stripped
 GameObject:
@@ -12706,6 +12707,7 @@ MonoBehaviour:
   agent: {fileID: 1330590880}
   destination: {x: 0, y: 0, z: 0}
   frequency: 7
+  logHits: 0
   logEffect: {fileID: 1737563571}
 --- !u!195 &1330590880
 NavMeshAgent:
@@ -16605,6 +16607,10 @@ PrefabInstance:
       value: Log
       objectReference: {fileID: 0}
     - target: {fileID: 9190952525616676419, guid: 9e0a093a368ee4f10b7c6c056f5f7077, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190952525616676419, guid: 9e0a093a368ee4f10b7c6c056f5f7077, type: 3}
       propertyPath: m_TagString
       value: LogTop
       objectReference: {fileID: 0}
@@ -18759,6 +18765,7 @@ MonoBehaviour:
   agent: {fileID: 1952721947}
   destination: {x: 0, y: 0, z: 0}
   frequency: 7
+  logHits: 0
   logEffect: {fileID: 1824403100}
 --- !u!1001 &1952970838
 PrefabInstance:
@@ -19536,6 +19543,7 @@ MonoBehaviour:
   agent: {fileID: 2016191366}
   destination: {x: 0, y: 0, z: 0}
   frequency: 7
+  logHits: 0
   logEffect: {fileID: 1563356630}
 --- !u!1 &2018005082 stripped
 GameObject:

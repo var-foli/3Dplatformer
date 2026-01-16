@@ -18,16 +18,12 @@ public class LogController : MonoBehaviour
     {
         // initializing log's coin to be inactive
         transform.Find("Coin Object").gameObject.SetActive(false);
-        //GameObject myobject = transform.Find("CoinObject").gameObject;
 
         InvokeRepeating(nameof(Destination), 1, frequency);
     }
 
     void Destination()
     {
-        //Xcoor = Random.Range(-15, 33);
-        //Zcoor = Random.Range(-8, 48);
-
         // changing position based on starting position
         Xcoor = transform.position.x + Random.Range(-10, 10);
         Zcoor = transform.position.z + Random.Range(-10, 10);
@@ -45,7 +41,6 @@ public class LogController : MonoBehaviour
         gameObject.GetComponent<NavMeshAgent>().enabled = false;
         transform.Find("ParticleLeaves").gameObject.SetActive(false);
         transform.Find("ParticleSmoke").gameObject.SetActive(false);
-        //logEffect.Play();
     }
 
     public void unfreezeEnemy()
@@ -55,7 +50,6 @@ public class LogController : MonoBehaviour
         gameObject.GetComponent<NavMeshAgent>().enabled = true;
         transform.Find("ParticleLeaves").gameObject.SetActive(true);
         transform.Find("ParticleSmoke").gameObject.SetActive(true);
-        //logEffect.Play();
     }
     public void ThrowCoinUp()
     {
@@ -67,18 +61,8 @@ public class LogController : MonoBehaviour
         coinTransform.gameObject.SetActive(true);
 
         coinScript.JumpUp();
-        
+
         transform.Find("FullBody").gameObject.SetActive(false);
         logEffect.Play();
-
-        // Jump
-        // the square root of H * -2 * G = how much velocity needed to reach desired height
-        //_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-
-        // apply gravity over time if under terminal (53.0f) (multiply by delta time twice to linearly speed up over time)
-        //if (_verticalVelocity < 53.0f)
-        //{
-        //    _verticalVelocity += Gravity * Time.deltaTime;
-        //}
     }
 }

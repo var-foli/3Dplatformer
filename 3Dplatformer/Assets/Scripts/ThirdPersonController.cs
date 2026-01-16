@@ -453,7 +453,6 @@ namespace StarterAssets
 
         private void OnTriggerEnter(Collider collision)
         {
-            Debug.Log($"collision with: {collision.gameObject.tag}");
             if (collision.CompareTag("Coin"))
             {
                 // make coin disapear on collision
@@ -463,7 +462,6 @@ namespace StarterAssets
             else if (collision.CompareTag("CoinObject"))
             {
                 // make coin disapear on collision
-                Debug.Log("coin object collision!");
                 collision.transform.parent.Find("Effect_07").SetParent(null);
                 collision.transform.parent.gameObject.SetActive(false);
                 coinCounter += 1;
@@ -498,7 +496,6 @@ namespace StarterAssets
 
         private IEnumerator LogHitHandler(LogController logScript)
         {
-            Debug.Log("Log was hit from above!");
             logScript.logHits += 1;
             logScript.freezeEnemy();
 
@@ -507,52 +504,33 @@ namespace StarterAssets
                 // character will do a jump action and be thrown upward a bit
                 yield return StartCoroutine(OnHitLog(logScript));
                 playerUnfreeze = true;
-            } else
-            {
-                yield return StartCoroutine(checkLogHits(logScript));
+                
             }
-
-            /*//freezeInput = false;
-            if (logScript.logHits == 2)
-            {
-                Debug.Log("Log hit twice!");
-                // kill enemy and make coin pop out
-                logScript.ThrowCoinUp();
-            } else if (playerUnfreeze == true)
-            {
-                Debug.Log("Log hit once!");
-                Debug.Log(logScript.logHits);
-                logScript.logHits = 0;
-                logScript.unfreezeEnemy();
-                playerUnfreeze = false;
-            }*/
+            yield return StartCoroutine(checkLogHits(logScript));
 
             
         }
 
         private IEnumerator checkLogHits(LogController logScript)
         {
-            //freezeInput = false;
             if (logScript.logHits == 2)
             {
-                Debug.Log("Log hit twice!");
                 // kill enemy and make coin pop out
                 logScript.ThrowCoinUp();
+                logScript.logHits = 0;
+                yield break;
             }
-            else if (playerUnfreeze == true)
+            else if (logScript.logHits == 1 && playerUnfreeze == true)
             {
-                Debug.Log("Log hit once!");
-                Debug.Log(logScript.logHits);
                 logScript.logHits = 0;
                 logScript.unfreezeEnemy();
                 playerUnfreeze = false;
+                yield break;
             }
-            yield return null;
         }
 
         private IEnumerator OnHitLog(LogController logScript)
         {
-            //freezeInput = true;
             // character will do a jump action and coin will apear above
             // jump action
 
@@ -581,14 +559,8 @@ namespace StarterAssets
                 _verticalVelocity += Gravity * Time.deltaTime;
             }
 
-            // wait for one frame for character to jump and Grounded to be false
-            yield return new WaitForSeconds(3f);
-            //yield return null;
-            checkLogHits(logScript);
-            // continue returning null until character is back on Ground
-            //while(!Grounded) yield return null;
-            //yield return null;
-            //////////////////
+            // freeze enemy for 1.5 seconds
+            yield return new WaitForSeconds(1.5f);
         }
 
         private void OnHitByLog(Collider collision)
